@@ -10,7 +10,7 @@ def check_date_diff(input_date, Date_condition_move):
     current_date = datetime.datetime.now().strftime("%Y%m%d")
     current_date = datetime.datetime.strptime(current_date, "%Y%m%d").date()
     difference = (current_date - input_date).days
-    if difference > Date_condition_move:
+    if difference > int(Date_condition_move):
         Bool_result = True
     else:
         Bool_result = False
@@ -21,18 +21,15 @@ def check_date_diff(input_date, Date_condition_move):
 def move_folder(source_folder, destination_folder, input_date, Date_condition_move):
     Statue = check_date_diff(input_date, Date_condition_move) #call method Check the conditions whether the specified date has been exceeded or not.
     if Statue :
-        New_source_path = source_folder + "\\" + str(input_date)
+        New_source_path = source_folder + "\\" + input_date
         try:
             shutil.move(New_source_path, destination_folder)
-            New_path = destination_folder + "\\" + str(input_date)
-            separate_folder(New_path)
+            separate_folder(destination_folder)
             print(f"Folder moved successfully from {New_source_path} to {destination_folder}.")
         except Exception as e:
             print(f"An error occurred while moving the folder: {e}")
     else: 
         print("No condition matching to move file")
-
-
 
 def create_folder(folder_path):
     try:
@@ -65,6 +62,7 @@ def separate_folder(path_folders):
             except Exception as e:
                 pass
 
+
 def main():
     # Get config from config.ini
     config = ConfigParser()
@@ -83,5 +81,4 @@ def main():
         print("The source_folder does not contain any folders.")
 
 if __name__ == "__main__":
-    #main()
-    separate_folder(r"C:\Users\1000267027\Desktop\move\Distination")
+    main()
