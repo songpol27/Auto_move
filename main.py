@@ -33,6 +33,7 @@ def move_folder(source_folder, destination_folder, input_date, Date_condition_mo
         print("No condition matching to move file")
 
 
+
 def create_folder(folder_path):
     try:
         os.makedirs(folder_path)
@@ -40,26 +41,29 @@ def create_folder(folder_path):
     except Exception as e:
         print(f"An error occurred while creating the folder: {e}")
 
-def separate_folder(folder):
-    folder = r"C:\Users\1000267027\Desktop\move\Distination\20230624"
+def separate_folder(path_folders):
+    path_folder = os.listdir(path_folders)
+    for folder in path_folder:
+        folder = path_folders + "\\" + folder 
 
-    OK_folder = folder + '\\' + "OK" 
-    NG_folder = folder + '\\' + "NG" 
-    create_folder(OK_folder)
-    create_folder(NG_folder)
+        Name_items = os.listdir(folder)
+        
+        for item in Name_items:
+            try:
+                source_path = folder + "\\" + item
+                Statue_Pic= item.split("_")[1]
+                OCR_code = item.split("_")[4].split(".")[0]
+                Destination_folder = folder + "\\" + Statue_Pic + "\\" + OCR_code
+                Destination_path = folder + "\\" + Statue_Pic + "\\" + OCR_code +"\\"+ item
 
-    Name_items = os.listdir(folder)
-    
-    for item in Name_items:
-        try:
-            source_path = folder + "\\" + item
-            Statue_Pic= item.split("_")[1]
-            if Statue_Pic == "OK":
-                shutil.move(source_path, OK_folder)
-            else:   
-                shutil.move(source_path, NG_folder)
-        except Exception as e:
-            pass
+                print(f"Source : {source_path} Statue : {Statue_Pic} OCR code : {OCR_code} Destination : {Destination_path}")
+                try:
+                    shutil.move(source_path, Destination_path)
+                except:   
+                    create_folder(Destination_folder)
+                    shutil.move(source_path, Destination_path)
+            except Exception as e:
+                pass
 
 def main():
     # Get config from config.ini
@@ -80,4 +84,4 @@ def main():
 
 if __name__ == "__main__":
     #main()
-    separate_folder("e")
+    separate_folder(r"C:\Users\1000267027\Desktop\move\Distination")
