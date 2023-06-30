@@ -3,6 +3,21 @@ import shutil
 import datetime
 from configparser import ConfigParser
 
+
+def check_date_diff(input_date, Date_condition_move):
+    Bool_result = False
+    current_date = datetime.datetime.now().strftime("%Y%m%d")
+    current_date = datetime.datetime.strptime(current_date, "%Y%m%d").date()
+    difference = (current_date - input_date).days
+    if difference > Date_condition_move:
+        Bool_result = True
+    else:
+        Bool_result = False
+
+    return Bool_result
+
+
+
 def main():
     # Get config from config.ini
     config = ConfigParser()
