@@ -3,7 +3,7 @@ import shutil
 import datetime
 from configparser import ConfigParser
 
-
+#Check the conditions whether the specified date has been exceeded or not.
 def check_date_diff(input_date, Date_condition_move):
     Bool_result = False
     input_date = datetime.datetime.strptime(input_date, "%Y%m%d").date()
@@ -17,13 +17,15 @@ def check_date_diff(input_date, Date_condition_move):
 
     return Bool_result
 
+# Move file
 def move_folder(source_folder, destination_folder, input_date, Date_condition_move):
-    Statue = check_date_diff(input_date, Date_condition_move)
-
+    Statue = check_date_diff(input_date, Date_condition_move) #call method Check the conditions whether the specified date has been exceeded or not.
     if Statue :
         New_source_path = source_folder + "\\" + str(input_date)
         try:
             shutil.move(New_source_path, destination_folder)
+            New_path = destination_folder + "\\" + str(input_date)
+            separate_folder(New_path)
             print(f"Folder moved successfully from {New_source_path} to {destination_folder}.")
         except Exception as e:
             print(f"An error occurred while moving the folder: {e}")
@@ -31,8 +33,33 @@ def move_folder(source_folder, destination_folder, input_date, Date_condition_mo
         print("No condition matching to move file")
 
 
+def create_folder(folder_path):
+    try:
+        os.makedirs(folder_path)
+        print(f"Folder created successfully at {folder_path}.")
+    except Exception as e:
+        print(f"An error occurred while creating the folder: {e}")
 
+def separate_folder(folder):
+    folder = r"C:\Users\1000267027\Desktop\move\Distination\20230624"
 
+    OK_folder = folder + '\\' + "OK" 
+    NG_folder = folder + '\\' + "NG" 
+    create_folder(OK_folder)
+    create_folder(NG_folder)
+
+    Name_items = os.listdir(folder)
+    
+    for item in Name_items:
+        try:
+            source_path = folder + "\\" + item
+            Statue_Pic= item.split("_")[1]
+            if Statue_Pic == "OK":
+                shutil.move(source_path, OK_folder)
+            else:   
+                shutil.move(source_path, NG_folder)
+        except Exception as e:
+            pass
 
 def main():
     # Get config from config.ini
@@ -52,4 +79,5 @@ def main():
         print("The source_folder does not contain any folders.")
 
 if __name__ == "__main__":
-    main()
+    #main()
+    separate_folder("e")
