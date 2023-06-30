@@ -6,6 +6,7 @@ from configparser import ConfigParser
 
 def check_date_diff(input_date, Date_condition_move):
     Bool_result = False
+    input_date = datetime.datetime.strptime(input_date, "%Y%m%d").date()
     current_date = datetime.datetime.now().strftime("%Y%m%d")
     current_date = datetime.datetime.strptime(current_date, "%Y%m%d").date()
     difference = (current_date - input_date).days
@@ -15,6 +16,21 @@ def check_date_diff(input_date, Date_condition_move):
         Bool_result = False
 
     return Bool_result
+
+def move_folder(source_folder, destination_folder, input_date, Date_condition_move):
+    Statue = check_date_diff(input_date, Date_condition_move)
+
+    if Statue :
+        New_source_path = source_folder + "\\" + str(input_date)
+        try:
+            shutil.move(New_source_path, destination_folder)
+            print(f"Folder moved successfully from {New_source_path} to {destination_folder}.")
+        except Exception as e:
+            print(f"An error occurred while moving the folder: {e}")
+    else: 
+        print("No condition matching to move file")
+
+
 
 
 
@@ -31,8 +47,7 @@ def main():
     if folders:
         print("The source_folder contains the following folders:")
         for folder in folders:
-            date_folder = datetime.datetime.strptime(folder, "%Y%m%d").date()
-            print(date_folder)
+            move_folder(source_folder, destination_folder, folder, 2)
     else:
         print("The source_folder does not contain any folders.")
 
